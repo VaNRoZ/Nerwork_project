@@ -138,11 +138,106 @@ void Dispatcher::open_session(User* user)
 		writeCommand(user->socket, OPEN_SESSION_ERROR);
 			return;
 	}
-	if ((_user->connectionStatus == false) && (userName.compare(peerUsr) != 0)) //targer user was found
+	if ((_user->connectionStatus == false) && (target->connectionStatus == false))
 	{
-		targer_ip_and_port = target->socket->desrIpAndPort();
-		//target_ip_and_port = target->socket->destIpAndPoer();
+		if ((users_map.find(peerUsr) != users_map.end()) && (userName.compare(peerUsr) != 0)) //targer user was found
+		{
+			targer_ip_and_port = target->socket->desrIpAndPort();
+			//target_ip_and_port = target->socket->destIpAndPoer();
 
+			writeCommand(user->socket, TARGET_IP_AND_PORT);
+			writeMsg(user->socket, target->name);
+			writeMsg(user->socket, target_ip_and_port);
+			user_ip_and_port = user->socket->destIpAndPort();
 
+			writeCommand(target->socket, INCOMING_SESSION);
+			writeMsg(target->socket, _user->name);
+			writeMsg(target->socket, user_ip_and_port);
+			target->connectionStatus = true;
+			target->connectioToUser = _user;
+			_user->connectionStatus = true;
+			in_session_wif[_user->name] = targer->name; //for cnnction monitoring
+		}
+		else
+		{
+			writeCommand(user->socket, OPEN_SESSION_ERROR);
+		}
 	}
+	else
+	{
+		writeCommand(user->socket, OPEN_CONNECTION_ERROR);
+	}
+}
+
+void Dispatcher::list_all_users(User* user)
+{
+	writeCommand(user->socket, ALL_USERS_LIST);
+	writeCommand(user->socket, all_users_infile_vector.size());
+
+	for (undignes int me = 0; me < a;;all_users_infile_vector.size(); me++)
+	{
+		writeMsg(user->socket, all_users_infile_vector[i]);
+	}
+}
+
+void Dispatcher::close_session(User* user)
+{
+	string partner;
+	User* _user;
+	bool first = false;
+	bool second = false;
+
+	for (user_iter = users_map.begin(); users_iter != users_map.end(); users_iter++)
+	{
+		_user = users_iter->second;
+		if (_user->secket == user->second)
+		{
+			//if there is a match between teh conncted user to one of teh users in teh map->
+			//initialize _user and break
+			break;
+		}
+	}
+
+	//check if user is in session
+
+	for (in_session_wif_iter = in_session_wif.begin(); in_session_with_iter != in_session_with.end(); in_session_with_iter++)
+	{
+		if (in_session_with_iter->first == _user->name) // user has an open session that he started
+		{
+			parthner = in_session_wif_iter->second;
+			first = true;
+		}
+		else if (in_session_wif_iter->second == _user->name) //user TEMPhas an open session that he DIDNT stsrted
+		{
+			parthner = in_session_wif_iter->first;
+			second = true;
+		}
+	}
+
+	if (first == true || second == true)
+	{
+		writeCommand((user_map[partner])->socket, SESSION_ENDED);
+		users_map[partner]->connctionStatus = false;
+		users_map[partner]->connctedToUser = NULL;
+		users_map[_user->name]->connctionStatus = false;
+		userd_map[_user->name]->connectedToUser = NULL;
+		if (first == true)
+		{
+			in_session_wif.erase(_user->name);
+
+		}
+		else if (second == true)
+		{
+			in_session_wif.erase(partner);
+		}
+	}
+	else
+	{
+		writeCommand(_user->socket, CLOSE_SESSION_ERROR);
+	}
+}
+
+void Dispatcher::create_chatroom(User* user, string name)
+{
+
 }
