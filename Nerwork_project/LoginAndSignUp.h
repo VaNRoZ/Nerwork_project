@@ -1,4 +1,4 @@
-#pragma once
+//#pragma once
 
 #ifndef LOGINANDSIGNUP_H_
 #define LOGINANDSIGNUP_H_

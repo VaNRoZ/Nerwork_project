@@ -30,15 +30,15 @@
     <ClCompile Include="Dispatcher.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="LoginAndSingUp.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="User.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Server.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="LoginAndSignUp.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Dispatcher.h">
@@ -48,6 +48,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="ChatRoom.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginAndSignUp.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
